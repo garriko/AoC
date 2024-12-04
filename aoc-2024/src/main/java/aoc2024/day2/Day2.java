@@ -1,16 +1,20 @@
 package aoc2024.day2;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class Day2 {
 
     public Integer calculateSafeReport(List<String> input) {
+        var debut = Instant.now();
         int numberOfSafeReport = 0;
 
         for (var report : input) {
@@ -21,12 +25,13 @@ public class Day2 {
                 numberOfSafeReport++;
             }
         }
-        ;
-
+        
+        Log.info("Part 1 time : " + Duration.between(Instant.now(), debut));
         return numberOfSafeReport;
     }
 
     public Integer calculateSafeReportPart2(List<String> input) {
+        var debut = Instant.now();
         int numberOfSafeReport = 0;
 
         for (var report : input) {
@@ -37,8 +42,9 @@ public class Day2 {
                 numberOfSafeReport++;
             }
         }
-        ;
-
+        
+        Log.info("Part 2 time : " + Duration.between(Instant.now(), debut));
+        
         return numberOfSafeReport;
     }
 
@@ -86,6 +92,8 @@ public class Day2 {
                     } else {
                         safe = removePreviousSafe;
                     }
+
+
                     if(safe) {
                         break;
                     }
