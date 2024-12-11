@@ -1,8 +1,6 @@
 package aoc2024.day7;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
