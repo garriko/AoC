@@ -11,6 +11,15 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Matrix {
+    public static int[] UP = { -1, 0 };
+    public static int[] UP_RIGHT =  { -1, 1 };
+    public static int[] RIGHT = { 0, 1 };
+    public static int[] DOWN_RIGHT = { 1, 1 };
+    public static int[] DOWN = { 1, 0 };
+    public static int[] DOWN_LEFT = { 1, -1 };
+    public static int[] LEFT = { 0, -1 };
+    public static int[] UP_LEFT =  { -1, -1 };
+    
 
     public static int[][] DIAGONALS = { { 1, 1 }, // down-right
             { 1, -1 }, // down-left

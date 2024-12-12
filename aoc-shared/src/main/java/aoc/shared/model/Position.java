@@ -2,7 +2,7 @@ package aoc.shared.model;
 
 import java.util.Objects;
 
-public class Position {
+public class Position implements Comparable<Position> {
     private int row;
     private int col;
 
@@ -58,6 +58,17 @@ public class Position {
     @Override
     public String toString() {
         return "Position ("+ row + ","+ col + ")";
+    }
+
+    @Override
+    public int compareTo(Position o) {
+        int compareRow = Integer.compare(row, o.row);
+        if(0 != compareRow) {
+            return compareRow;
+        } else {
+            return Integer.compare(col, o.col);
+        }
+        
     }
     
 
