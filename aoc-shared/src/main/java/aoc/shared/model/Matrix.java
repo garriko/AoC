@@ -7,28 +7,27 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Matrix {
     public static int[] UP = { -1, 0 };
-    public static int[] UP_RIGHT =  { -1, 1 };
+    public static int[] UP_RIGHT = { -1, 1 };
     public static int[] RIGHT = { 0, 1 };
     public static int[] DOWN_RIGHT = { 1, 1 };
     public static int[] DOWN = { 1, 0 };
     public static int[] DOWN_LEFT = { 1, -1 };
     public static int[] LEFT = { 0, -1 };
-    public static int[] UP_LEFT =  { -1, -1 };
-    
+    public static int[] UP_LEFT = { -1, -1 };
 
     public static int[][] DIAGONALS = { { 1, 1 }, // down-right
             { 1, -1 }, // down-left
             { -1, 1 }, // up-right
             { -1, -1 } // up-left
     };
-    
-    public static int[][] CARDINAL_DIRECTIONS = {
-            { 0, 1 }, // right
+
+    public static int[][] CARDINAL_DIRECTIONS = { { 0, 1 }, // right
             { 1, 0 }, // down
             { 0, -1 }, // left
             { -1, 0 }, // up
@@ -59,18 +58,32 @@ public class Matrix {
     }
 
     public Matrix(Matrix m) {
-        for(int i = 0; i < m.getRowCount(); i++ ) {
-            for(int j = 0; j < m.getColCount(); j++ ) {
-                if(this.matrix.size() == i) {
+        for (int i = 0; i < m.getRowCount(); i++) {
+            for (int j = 0; j < m.getColCount(); j++) {
+                if (this.matrix.size() == i) {
                     this.matrix.add(new ArrayList<>());
                 }
                 this.matrix.get(i).add(m.matrix.get(i).get(j));
             }
-            
+
         }
-       
+
         this.rowCount = m.rowCount;
         this.colCount = m.colCount;
+    }
+
+    public Matrix(int row, int col) {
+        this.rowCount= row;
+        this.colCount = col;
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (this.matrix.size() == i) {
+                    this.matrix.add(new ArrayList<>());
+                }
+                this.matrix.get(i).add('.');
+            }
+
+        }
     }
 
     public static Matrix fromFile(Path file) throws IOException {
@@ -83,6 +96,20 @@ public class Matrix {
                         .toList();
                 m.add(row);
             }
+
+        }
+
+        return new Matrix(m);
+    }
+
+    public static Matrix fromStringList(List<String> strList) {
+        List<List<Character>> m = new ArrayList<>();
+
+        for (String currentString : strList) {
+
+            List<Character> row = currentString.chars().mapToObj(c -> (char) c) // Map each int (char) to Character
+                    .collect(Collectors.toList());
+            m.add(row);
 
         }
 
@@ -102,39 +129,39 @@ public class Matrix {
             return null;
         }
 
-        return IntStream.range(0, matrix.size())
-            .mapToObj(row -> {
-                List<Character> rowList = matrix.get(row);
-                return IntStream.range(0, rowList.size())
-                        .filter(col -> rowList.get(col) == c)
-                        .mapToObj(col -> new Position(row, col));
-            })
-            .flatMap(s->s)
-            .findFirst();
+        return IntStream.range(0, matrix.size()).mapToObj(row -> {
+            List<Character> rowList = matrix.get(row);
+            return IntStream.range(0, rowList.size()).filter(col -> rowList.get(col) == c)
+                    .mapToObj(col -> new Position(row, col));
+        }).flatMap(s -> s).findFirst();
 
     }
 
     public Character get(Position pos) {
         return get(pos.getRow(), pos.getCol());
     }
-    
 
     public void set(Position position, char c) {
-        
-            matrix.get(position.getRow()).set(position.getCol(), c);
-        
+
+        matrix.get(position.getRow()).set(position.getCol(), c);
+
     }
     
+    public void set(int row, int col, char c) {
+
+        matrix.get(row).set(col, c);
+
+    }
 
     public boolean hasPosition(Position currentPosition) {
         int row = currentPosition.getRow();
         int col = currentPosition.getCol();
         return row >= 0 && row < rowCount && col >= 0 && col < colCount;
-     
+
     }
-    
+
     public boolean hasPosition(int row, int col) {
-       return hasPosition(new Position(row, col));
+        return hasPosition(new Position(row, col));
     }
 
     public Long countForPredicate(int row, int col, int distance, Predicate<String> predicate) {
@@ -191,14 +218,14 @@ public class Matrix {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        
-        for(List<Character> row : matrix) {
-            for(Character c : row) {
+
+        for (List<Character> row : matrix) {
+            for (Character c : row) {
                 sb.append(c);
             }
             sb.append("\n");
         }
-        
+
         return sb.toString();
     }
 }
